@@ -1,5 +1,7 @@
 # DocQA Agent
 
+![tests](https://github.com/hassan227227/docqa-agent/actions/workflows/ci.yml/badge.svg)
+
 Ask questions about your own documents and get answers that cite the exact passages they came from. Built with Python, BM25 retrieval, Claude (with citations), FastAPI and an MCP server.
 
 ```
@@ -41,6 +43,15 @@ curl -X POST localhost:8000/ask -H "Content-Type: application/json" \
 pytest -q
 ```
 
+### Docker
+
+```bash
+docker build -t docqa-agent .
+docker run -p 8000:8000 -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY docqa-agent
+```
+
+The image runs as a non-root user and has a health check on `/health`. Tests run on every push via GitHub Actions (`.github/workflows/ci.yml`).
+
 Point it at your own files with `DOCQA_DOCS=/path/to/folder` (`.md` and `.txt`). The sample documents in `sample_docs/` are fictional policies.
 
 ## Use it from Claude Desktop (MCP)
@@ -73,7 +84,7 @@ Add this to your Claude Desktop config:
 
 - Embedding search (pgvector) alongside BM25, with rank fusion
 - PDF ingestion
-- An evaluation set measuring answer accuracy and citation coverage
+- An evaluation set measuring answer accuracy and citation coverage, using [llm-eval-kit](https://github.com/hassan227227/llm-eval-kit)
 
 ## Author
 
